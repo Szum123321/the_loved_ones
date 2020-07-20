@@ -18,38 +18,35 @@
 
 package net.szum123321.the_loved_ones.mixin;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(TameableEntity.class)
-public abstract class TamableEntityMixin extends AnimalEntity {
-
-    protected TamableEntityMixin(EntityType<? extends AnimalEntity> type, World world) {
+@Mixin(AnimalEntity.class)
+public abstract class AnimalEntityMixin extends PassiveEntity {
+    protected AnimalEntityMixin(EntityType<? extends AnimalEntity> type, World world) {
         super(type, world);
     }
 
-    @Environment(EnvType.SERVER)
-    @Override
-    public boolean damage(DamageSource source, float amount){
-        if(!this.world.isClient){
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
+        if(!this.world.isClient() && (Object)this instanceof TameableEntity) {
             TameableEntity it = (TameableEntity)(Object)this;
 
-            if(it.getOwner() != null){
-                if(source.getAttacker() instanceof PlayerEntity){
-                    if(source.getAttacker() == it.getOwner()){
-                        return false;
-                    }
+            if(it.getOwner() != null) {
+                if(source.getAttacker() instanceof PlayerEntity) {
+                    if(source.getAttacker() == it.getOwner())
+                        ci.setReturnValue(false);
                 }
             }
         }
-
-        return super.damage(source, amount);
     }
 }

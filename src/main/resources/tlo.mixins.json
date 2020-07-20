@@ -3,7 +3,7 @@
   "package": "net.szum123321.the_loved_ones.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "TamableEntityMixin"
+    "AnimalEntityMixin"
   ],
   "client": [
   ],
