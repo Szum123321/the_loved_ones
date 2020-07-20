@@ -9,8 +9,9 @@
     "Szum123321"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/the-loved-ones",
+    "sources": "https://github.com/Szum123321/the_loved_ones",
+    "issues": "https://github.com/Szum123321/the_loved_ones/issues"
   },
 
   "license": "GPL-v3",
