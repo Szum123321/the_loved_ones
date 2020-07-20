@@ -17,11 +17,7 @@
   "icon": "assets/the_loved_ones/pets.png",
 
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "net.szum123321.the_loved_ones.TheLovedOnes"
-    ]
-  },
+
   "mixins": [
     "tlo.mixins.json"
   ],
