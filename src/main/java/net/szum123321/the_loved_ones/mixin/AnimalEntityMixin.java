@@ -47,7 +47,7 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
 
                     if(getServer().isSinglePlayer()) {
                         //Check if attacking source is owner or pets damage on LAN is disabled
-                        if (source.getAttacker().getUuid() == it.getOwnerUuid() || !TheLovedOnes.config.petsDamageOnLAN)
+                        if (source.getAttacker().getUuid() == it.getOwnerUuid() || TheLovedOnes.config.petsDamageOnLAN == false)
                             ci.setReturnValue(false);
                     } else {
 
@@ -56,13 +56,13 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
                             ci.setReturnValue(false);
 
                         // Check if PVP is enabled
-                        if(getServer().isPvpEnabled())
-                            if(!TheLovedOnes.config.petsDamagePVP)
+                        if(getServer().isPvpEnabled()) {
+                            if (TheLovedOnes.config.petsDamagePVP == false)
                                 ci.setReturnValue(false);
-                        else
-                            if(!TheLovedOnes.config.petsDamageNoPVP)
+                        } else {
+                            if (TheLovedOnes.config.petsDamageNoPVP == false)
                                 ci.setReturnValue(false);
-
+                        }
                     }
                 }
             }
