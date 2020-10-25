@@ -12,7 +12,5 @@ public class TheLovedOnes implements ModInitializer {
     @Override
     public void onInitialize() {
         config = ConfigManager.loadConfig(ConfigHandler.class);
-        logger.debug("Loaded config?");
-        System.out.println("Config Loaded");
     }
 }
