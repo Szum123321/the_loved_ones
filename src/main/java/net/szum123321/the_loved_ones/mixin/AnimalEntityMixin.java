@@ -29,6 +29,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.szum123321.the_loved_ones.TheLovedOnes;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalEntityMixin extends PassiveEntity {
@@ -41,10 +42,28 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
         if(!this.world.isClient() && (Object)this instanceof TameableEntity) {
             TameableEntity it = (TameableEntity)(Object)this;
 
-            if(it.getOwner() != null) {
+            if(it.isTamed()) {
                 if(source.getAttacker() instanceof PlayerEntity) {
-                    if(source.getAttacker() == it.getOwner())
-                        ci.setReturnValue(false);
+
+                    if(getServer().isSinglePlayer()) {
+                        //Check if attacking source is owner or pets damage on LAN is disabled
+                        if (source.getAttacker().getUuid() == it.getOwnerUuid() || TheLovedOnes.config.petsDamageOnLAN == false)
+                            ci.setReturnValue(false);
+                    } else {
+
+                        //Check if attacking source is owner
+                        if (source.getAttacker().getUuid() == it.getOwnerUuid())
+                            ci.setReturnValue(false);
+
+                        // Check if PVP is enabled
+                        if(getServer().isPvpEnabled()) {
+                            if (TheLovedOnes.config.petsDamagePVP == false)
+                                ci.setReturnValue(false);
+                        } else {
+                            if (TheLovedOnes.config.petsDamageNoPVP == false)
+                                ci.setReturnValue(false);
+                        }
+                    }
                 }
             }
         }
