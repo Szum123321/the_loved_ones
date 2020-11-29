@@ -4,7 +4,7 @@ import blue.endless.jankson.Comment;
 import io.github.cottonmc.cotton.config.annotations.ConfigFile;
 
 @SuppressWarnings("CanBeFinal")
-@ConfigFile(name = "./TheLovedOnes/config")
+@ConfigFile(name = "the_loved_ones")
 public class ConfigHandler {
     @Comment("\nShould pets be damaged by other players when PVP is enabled?\n")
     public boolean petsDamagePVP = true;
