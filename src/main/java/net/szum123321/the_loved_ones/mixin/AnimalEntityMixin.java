@@ -44,23 +44,21 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
 
             if(it.isTamed()) {
                 if(source.getAttacker() instanceof PlayerEntity) {
-
                     if(getServer().isSinglePlayer()) {
                         //Check if attacking source is owner or pets damage on LAN is disabled
-                        if (source.getAttacker().getUuid() == it.getOwnerUuid() || TheLovedOnes.config.petsDamageOnLAN == false)
+                        if (source.getAttacker().getUuid() == it.getOwnerUuid() || !TheLovedOnes.config.petsDamageOnLAN)
                             ci.setReturnValue(false);
                     } else {
-
                         //Check if attacking source is owner
                         if (source.getAttacker().getUuid() == it.getOwnerUuid())
                             ci.setReturnValue(false);
 
                         // Check if PVP is enabled
                         if(getServer().isPvpEnabled()) {
-                            if (TheLovedOnes.config.petsDamagePVP == false)
+                            if (!TheLovedOnes.config.petsDamagePVP)
                                 ci.setReturnValue(false);
                         } else {
-                            if (TheLovedOnes.config.petsDamageNoPVP == false)
+                            if (!TheLovedOnes.config.petsDamageNoPVP)
                                 ci.setReturnValue(false);
                         }
                     }
