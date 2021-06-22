@@ -21,6 +21,7 @@ package net.szum123321.the_loved_ones.mixin;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,6 +32,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.szum123321.the_loved_ones.TheLovedOnes;
 
+import java.util.Objects;
+import java.util.UUID;
+
 @Mixin(AnimalEntity.class)
 public abstract class AnimalEntityMixin extends PassiveEntity {
     protected AnimalEntityMixin(EntityType<? extends AnimalEntity> type, World world) {
@@ -39,28 +43,32 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
-        if(!this.world.isClient() && (Object)this instanceof TameableEntity) {
-            TameableEntity it = (TameableEntity)(Object)this;
+        if(!this.world.isClient() && source.getAttacker() instanceof PlayerEntity) {
+            UUID owner_uuid = null;
 
-            if(it.isTamed()) {
-                if(source.getAttacker() instanceof PlayerEntity) {
-                    if(getServer().isSinglePlayer()) {
-                        //Check if attacking source is owner or pets damage on LAN is disabled
-                        if (source.getAttacker().getUuid() == it.getOwnerUuid() || !TheLovedOnes.config.petsDamageOnLAN)
+            if ((Object) this instanceof TameableEntity animal && animal.isTamed()){
+                owner_uuid = animal.getOwnerUuid();
+            } else if((Object)this instanceof HorseBaseEntity horse && horse.isTame()) {
+                owner_uuid = horse.getOwnerUuid();
+            }
+
+            if(Objects.nonNull(owner_uuid)) {
+                if (getServer().isSinglePlayer()) {
+                    //Check if attacking source is owner or pets damage on LAN is disabled
+                    if (source.getAttacker().getUuid().equals(owner_uuid) || !TheLovedOnes.config.petsDamageOnLAN)
+                        ci.setReturnValue(false);
+                } else {
+                    //Check if attacking source is owner
+                    if (source.getAttacker().getUuid().equals(owner_uuid))
+                        ci.setReturnValue(false);
+
+                    // Check if PVP is enabled
+                    if (getServer().isPvpEnabled()) {
+                        if (!TheLovedOnes.config.petsDamagePVP)
                             ci.setReturnValue(false);
                     } else {
-                        //Check if attacking source is owner
-                        if (source.getAttacker().getUuid() == it.getOwnerUuid())
+                        if (!TheLovedOnes.config.petsDamageNoPVP)
                             ci.setReturnValue(false);
-
-                        // Check if PVP is enabled
-                        if(getServer().isPvpEnabled()) {
-                            if (!TheLovedOnes.config.petsDamagePVP)
-                                ci.setReturnValue(false);
-                        } else {
-                            if (!TheLovedOnes.config.petsDamageNoPVP)
-                                ci.setReturnValue(false);
-                        }
                     }
                 }
             }
