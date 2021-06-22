@@ -1,0 +1,2 @@
+This project uses third party libraries as its dependencies and includes them in jar. Those are :
+	Cotton config, Cotton logging, and Jankson-Fabric all by Cotton team licensed under MIT license which can be found at https://github.com/CottonMC/Cotton
