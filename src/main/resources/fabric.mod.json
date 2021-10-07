@@ -17,7 +17,7 @@
     "issues": "https://github.com/Szum123321/the_loved_ones/issues"
   },
 
-  "license": "GPL-v3",
+  "license": "LGPL",
   "icon": "assets/the_loved_ones/pets.png",
 
   "environment": "*",
