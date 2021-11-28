@@ -46,14 +46,14 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
         if(!this.world.isClient() && source.getAttacker() instanceof PlayerEntity) {
             UUID owner_uuid = null;
 
-            if ((Object) this instanceof TameableEntity animal && animal.isTamed()){
+            if ((Object)this instanceof TameableEntity animal && animal.isTamed()){
                 owner_uuid = animal.getOwnerUuid();
             } else if((Object)this instanceof HorseBaseEntity horse && horse.isTame()) {
                 owner_uuid = horse.getOwnerUuid();
             }
 
             if(Objects.nonNull(owner_uuid)) {
-                if (getServer().isSinglePlayer()) {
+                if (getServer().isSingleplayer()) {
                     //Check if attacking source is owner or pets damage on LAN is disabled
                     if (source.getAttacker().getUuid().equals(owner_uuid) || !TheLovedOnes.config.petsDamageOnLAN)
                         ci.setReturnValue(false);
