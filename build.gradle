@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -10,11 +10,14 @@ archivesBaseName = project.archives_base_name
 version = "${project.mod_version}+${getMcMinor(project.minecraft_version)}"
 group = project.maven_group
 
-minecraft {
-}
-
 repositories{
 	maven { url 'https://server.bbkr.space/artifactory/libs-release' }
+	maven {
+		url "https://maven.terraformersmc.com/releases/"
+		content {
+			includeGroup "com.terraformersmc"
+		}
+	}
 }
 
 dependencies {
@@ -33,6 +36,9 @@ dependencies {
 	include "io.github.cottonmc.cotton:cotton-config:1.0.0-rc.7"
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
+
+	//Include modmenu for testing purposes
+	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 processResources {

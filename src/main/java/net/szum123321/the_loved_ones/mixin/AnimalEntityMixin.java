@@ -20,8 +20,8 @@ package net.szum123321.the_loved_ones.mixin;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,7 +48,7 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
 
             if ((Object)this instanceof TameableEntity animal && animal.isTamed()){
                 owner_uuid = animal.getOwnerUuid();
-            } else if((Object)this instanceof HorseBaseEntity horse && horse.isTame()) {
+            } else if((Object)this instanceof AbstractHorseEntity horse && horse.isTame()) {
                 owner_uuid = horse.getOwnerUuid();
             }
 
