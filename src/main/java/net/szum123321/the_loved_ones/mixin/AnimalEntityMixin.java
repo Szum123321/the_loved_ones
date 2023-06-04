@@ -43,7 +43,7 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
-        if(!this.world.isClient() && source.getAttacker() instanceof PlayerEntity) {
+        if(!this.getWorld().isClient() && source.getAttacker() instanceof PlayerEntity) {
             UUID owner_uuid = null;
 
             if ((Object)this instanceof TameableEntity animal && animal.isTamed()){
